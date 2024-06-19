@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokedex</title>
+    <!-- basic -->
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="./js/script.js"></script>
+    <!-- fonts -->
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <!-- chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./js/chart.js"></script>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./img/pokeball.png" type="image/png" />
+  </head>
+  <body onload="init()">
+    <header>
+      <a href="./index.html" class="headline">
+        <img src="./img/pokeball.png" alt="pokeball" />
+        <h1>Pokedex</h1>
+      </a>
+      <div class="search-input">
+        <input id="pokeSearch" type="text" placeholder="Suche..." onkeyup="searchForPokemons()"/>
+      </div>
+    </header>
+
+    <div class="single-pokemon" id="singlePokemon">
+
+      <div class="single-div-left-right"></div>
+
+      <div class="single-div-middle d-none" id="pokedex">
+        <div class="poke-dex-single">
+          <div class="poke-dex-single-div" id="singleTypeColor">
+            <div class="single-top">
+              <div class="place-holder"><h1>#<span id="pokemonID"></span></h1></div>
+              <h1 id="pokemonName">Name</h1>
+              <h1 class="close-single" onclick="closeDetailLook()">X</h1>
+            </div>
+            <div class="single-nav">
+
+              <div id="leftButton"></div>
+
+              <div class="pokemon-type" id="pokemonType"></div>
+
+              <div id="rightButton"></div>
+            </div>
+
+            <div id="pokemonImage"></div>
+          </div>
+        </div>
+        <div class="info-container" id="chartDiv">
+          <div>pokemon stats</div>
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+
+      <div class="single-div-left-right"></div>
+    </div>
+
+    <section class="pokemon-overview" id="pokemonOverview"></section>
+
+    <div class="more-pokemons-div">
+      <button id="morePokemons" class="more-pokemons" onclick="morePokemons()">
+        20 weitere Pokemon laden
+      </button>
+    </div>
+  </body>
+</html>
