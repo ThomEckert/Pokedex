@@ -1,8 +1,4 @@
 
-
-
-
-
 function destroyChart() {
   chart.destroy();
 }

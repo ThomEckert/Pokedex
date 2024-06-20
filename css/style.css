@@ -15,6 +15,9 @@ h3 {
     margin-block: 0;
     text-transform: capitalize;
 }
+section {
+  max-width: 1440px;
+}
 /*
 |////////////////////////////////////////////////|
 |                                                |
@@ -52,6 +55,7 @@ h3 {
 |                                                 |
 |/////////////////////////////////////////////////|
 */
+
 .pokemon-overview{
     display: flex;
     flex-wrap: wrap;

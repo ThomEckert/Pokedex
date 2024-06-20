@@ -8,6 +8,7 @@ let pokemonsOverview = [];
 let testOffset = 0;
 let maxPokemonOnPage = 20;
 let loadingInProgress = false;
+let lastTwenty = [];
 
 async function init() {
   await loadAllPokemons();
@@ -38,6 +39,7 @@ async function searchForPokemons() {
           pokemonNames.push(element);} }
           await renderOverviewPokemons(pokemonNames);
     } else {pokemonNames = []; 
+      document.getElementById("pokemonOverview").innerHTML = "";
       await renderOverviewPokemons(pokemonsOverview)};
 } 
 
@@ -59,9 +61,7 @@ async function loadAllPokemons() {
   pokemons.push(responseResults);
 }
 
-let lastTwenty = [];
-
-function loadOverviewPokemons() {
+async function loadOverviewPokemons() {
   lastTwenty = [];
   for (let index = testOffset; index < maxPokemonOnPage; index++) {
     let element = pokemons[0][index];
@@ -72,15 +72,15 @@ function loadOverviewPokemons() {
 }
 
 async function renderOverviewPokemons(responseResults) {
+
   let pokemonOverview = document.getElementById("pokemonOverview");
-  // pokemonOverview.innerHTML = "";
-  for (i = 0; i < responseResults.length; i++) {
-    let pokemonDatas = responseResults[i];
+  for (let i = 0; i < lastTwenty.length; i++) {
+    let pokemonDatas = lastTwenty[i];
     let pokemonData = pokemonDatas.url;
     renderOverviewPokemonsIfElse(i, pokemonDatas);
     pokemonOverview.innerHTML += pokemonOverviewHTML(i, responseResults, index);
     await loadPokemon(pokemonData);
-    let loadetPokemonTypes = currentPokemon["types"];
+    let loadetPokemonTypes = currentPokemon.types;
     document.getElementById(`pokemonType[${i}]`).innerHTML = "";
     pokemonColor(i, loadetPokemonTypes);
   }
@@ -97,14 +97,33 @@ function renderOverviewPokemonsIfElse(i, pokemonDatas) {
 }
 
 function pokemonColor(i, loadetPokemonTypes) {
-  for (let j = 0; j < loadetPokemonTypes.length; j++) {
+  // if (maxPokemonOnPage == 20) {
+    for (let j = 0; j < loadetPokemonTypes.length; j++) {
     const pokeTypes = loadetPokemonTypes[j];
     document.getElementById(`pokemonType[${i}]`).innerHTML += `
             <span class="pokemon-type-text" id="pokemonColor${[i, j]}">${pokeTypes.type.name}</span>
         `;
     whichColor(i);
-  }
-}
+  // }
+  // } else {
+  //   for (let k = pokemonsOverview.length - 20; k < pokemonsOverview.length; k++) {
+  //     const element = maxPokemonOnPage[k]; 
+  //     for (let j = 0; j < loadetPokemonTypes.length; j++) {
+  //       const pokeTypes = loadetPokemonTypes[j];
+  //       document.getElementById(`pokemonType[${k}]`).innerHTML += `
+  //               <span class="pokemon-type-text" id="pokemonColor${[k, j]}">${pokeTypes.type.name}</span>
+  //           `;
+  //       whichColor(k);
+  //     }  
+  //   }
+  // }  else {
+  //   for (let k = 0; k < currentPokemon.length; k++) {
+  //     let pokeTypes = currentPokemon[k];
+  //     console.log(pokeTypes);
+  //   }
+  
+  // }
+}}
 
 function whichColor(i) {
   let typeID = document.getElementById(`pokemonColor${i},0`).innerText;
@@ -117,14 +136,14 @@ async function loadPokemon(data) {
   currentPokemon = await response.json();
 }
 
-function morePokemons() {
+async function morePokemons() {
   if (!loadingInProgress) {
   loadingInProgress = true;
   maxPokemonOnPage = maxPokemonOnPage + 20;
   testOffset = testOffset + 20;
-  loadOverviewPokemons();
-  loadingInProgress = false;
+  await loadOverviewPokemons();
   }
+  loadingInProgress = false;
 }
 
 function pokemonOverviewHTML(i, responseResults, index) {
@@ -135,7 +154,7 @@ function pokemonOverviewHTML(i, responseResults, index) {
             <div class="type-color" id="overview${pokemonID}" onclick="detailLook(${pokemonID})">
                 <div class="overview-headline">
                     <h3>${responseResults[i].name}</h3>
-                    <span><b>#${index + 1}</b></span>
+                    <span><b>#${pokemonID}</b></span>
                 </div>
                 <div class="overview-box">
                     <div class="pokemon-type" id="pokemonType[${i}]">
@@ -144,7 +163,7 @@ function pokemonOverviewHTML(i, responseResults, index) {
                     <div id="pokemonID[${i}]" class="img-box">
                         <img class="pokemon-image" 
                         src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
-                          index + 1
+                          pokemonID
                         }.png" alt="">
                     </div>
                 </div>
@@ -261,8 +280,7 @@ function getStats(responseSingleResult) {
  async function nextPokemon(iSingle) {
   if (!loadingInProgress) {
     loadingInProgress = true;
-    console.log(loadingInProgress);
-    if (iSingle < 1024) {
+    if (iSingle < 1025) {
       let result = iSingle + 1;
       iSingle = result;
     } else {
@@ -271,7 +289,6 @@ function getStats(responseSingleResult) {
     await closeDetailLook();
     await detailLook(iSingle);
     loadingInProgress = false;
-    console.log(loadingInProgress);
   }
 }
 
