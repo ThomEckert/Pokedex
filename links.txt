@@ -1,5 +1,0 @@
-logo:
-<a target="_blank" href="https://icons8.com/icon/cf5VAHkQsmvA/pokeball">Pokéball</a> Icon von <a target="_blank" href="https://icons8.com">Icons8</a>
-
-pfeile:
-<a target="_blank" href="https://icons8.com/icon/AIKY5pYoauww/left">Links</a> Icon von <a target="_blank" href="https://icons8.com">Icons8</a>

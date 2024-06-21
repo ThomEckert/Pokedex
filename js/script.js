@@ -32,14 +32,18 @@ async function searchForPokemons() {
     if (searchObject.length >= 3) {
       document.getElementById("pokemonOverview").innerHTML = "";
       pokemonNames = [];
+      document.getElementById("morePokemons").style.display = "none";
       for (let index = 0; index < searchLocation.length; index++) {
         let element = searchLocation[index];
         let elementName = element.name;
         if (elementName.toLowerCase().includes(searchObject)) {
           pokemonNames.push(element);} }
+          testOffset = 0;
           await renderOverviewPokemons(pokemonNames);
     } else {pokemonNames = []; 
+      document.getElementById("morePokemons").style.display = "";
       document.getElementById("pokemonOverview").innerHTML = "";
+      testOffset = maxPokemonOnPage - 20;
       await renderOverviewPokemons(pokemonsOverview)};
 } 
 
@@ -63,7 +67,7 @@ async function loadAllPokemons() {
 
 async function loadOverviewPokemons() {
   lastTwenty = [];
-  for (let index = testOffset; index < maxPokemonOnPage; index++) {
+  for (let index = 0; index < maxPokemonOnPage; index++) {
     let element = pokemons[0][index];
     pokemonsOverview.push(element);
     lastTwenty.push(element);
@@ -74,8 +78,8 @@ async function loadOverviewPokemons() {
 async function renderOverviewPokemons(responseResults) {
 
   let pokemonOverview = document.getElementById("pokemonOverview");
-  for (let i = 0; i < lastTwenty.length; i++) {
-    let pokemonDatas = lastTwenty[i];
+  for (let i = testOffset; i < responseResults.length; i++) {
+    let pokemonDatas = responseResults[i];
     let pokemonData = pokemonDatas.url;
     renderOverviewPokemonsIfElse(i, pokemonDatas);
     pokemonOverview.innerHTML += pokemonOverviewHTML(i, responseResults, index);
@@ -84,6 +88,7 @@ async function renderOverviewPokemons(responseResults) {
     document.getElementById(`pokemonType[${i}]`).innerHTML = "";
     pokemonColor(i, loadetPokemonTypes);
   }
+  document.getElementById("morePokemons").disabled = false;
 }
 
 function renderOverviewPokemonsIfElse(i, pokemonDatas) {
@@ -97,33 +102,15 @@ function renderOverviewPokemonsIfElse(i, pokemonDatas) {
 }
 
 function pokemonColor(i, loadetPokemonTypes) {
-  // if (maxPokemonOnPage == 20) {
-    for (let j = 0; j < loadetPokemonTypes.length; j++) {
+  for (let j = 0; j < loadetPokemonTypes.length; j++) {
     const pokeTypes = loadetPokemonTypes[j];
     document.getElementById(`pokemonType[${i}]`).innerHTML += `
             <span class="pokemon-type-text" id="pokemonColor${[i, j]}">${pokeTypes.type.name}</span>
         `;
     whichColor(i);
-  // }
-  // } else {
-  //   for (let k = pokemonsOverview.length - 20; k < pokemonsOverview.length; k++) {
-  //     const element = maxPokemonOnPage[k]; 
-  //     for (let j = 0; j < loadetPokemonTypes.length; j++) {
-  //       const pokeTypes = loadetPokemonTypes[j];
-  //       document.getElementById(`pokemonType[${k}]`).innerHTML += `
-  //               <span class="pokemon-type-text" id="pokemonColor${[k, j]}">${pokeTypes.type.name}</span>
-  //           `;
-  //       whichColor(k);
-  //     }  
-  //   }
-  // }  else {
-  //   for (let k = 0; k < currentPokemon.length; k++) {
-  //     let pokeTypes = currentPokemon[k];
-  //     console.log(pokeTypes);
-  //   }
+  }
   
-  // }
-}}
+}
 
 function whichColor(i) {
   let typeID = document.getElementById(`pokemonColor${i},0`).innerText;
@@ -137,13 +124,11 @@ async function loadPokemon(data) {
 }
 
 async function morePokemons() {
-  if (!loadingInProgress) {
-  loadingInProgress = true;
+  document.getElementById("morePokemons").disabled = true;
   maxPokemonOnPage = maxPokemonOnPage + 20;
-  testOffset = testOffset + 20;
+  testOffset = maxPokemonOnPage - 20;
   await loadOverviewPokemons();
-  }
-  loadingInProgress = false;
+  
 }
 
 function pokemonOverviewHTML(i, responseResults, index) {
@@ -160,7 +145,7 @@ function pokemonOverviewHTML(i, responseResults, index) {
                     <div class="pokemon-type" id="pokemonType[${i}]">
                         <div class="pokemon-type-text" id="typeColor${i}"></div>
                     </div>
-                    <div id="pokemonID[${i}]" class="img-box">
+                    <div id="pokemonID[${pokemonID}]" class="img-box">
                         <img class="pokemon-image" 
                         src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${
                           pokemonID
