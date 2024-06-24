@@ -47,7 +47,6 @@ async function searchForPokemons() {
       await renderOverviewPokemons(pokemonsOverview)};
 } 
 
-
 /*
 |///////////////////////////////////////////////////////////|
 |                                                           |
@@ -57,6 +56,7 @@ async function searchForPokemons() {
 |                                                           |
 |///////////////////////////////////////////////////////////|
 */
+
 async function loadAllPokemons() {
   let url = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=1025`;
   let response = await fetch(url);
@@ -109,7 +109,6 @@ function pokemonColor(i, loadetPokemonTypes) {
         `;
     whichColor(i);
   }
-  
 }
 
 function whichColor(i) {
@@ -128,7 +127,6 @@ async function morePokemons() {
   maxPokemonOnPage = maxPokemonOnPage + 20;
   testOffset = maxPokemonOnPage - 20;
   await loadOverviewPokemons();
-  
 }
 
 function pokemonOverviewHTML(i, responseResults, index) {
@@ -167,6 +165,7 @@ function pokemonOverviewHTML(i, responseResults, index) {
 |                                                        |
 |////////////////////////////////////////////////////////|
 */
+
 async function detailLook(iSingle) {
   document.getElementById("pokedex").classList.remove("d-none");
   document.getElementById("chartDiv").classList.remove("d-none");
